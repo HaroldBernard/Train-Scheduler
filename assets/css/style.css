@@ -1,0 +1,15 @@
+.jumbotron {
+    background-image: url("../images/train2.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover
+}
+body {
+    background: url("../images/tracks2.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover
+}
+/* h1, h3 {
+
+} */
