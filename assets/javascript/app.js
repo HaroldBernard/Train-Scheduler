@@ -1,3 +1,4 @@
+// initialize firebase
 var config = {
     apiKey: "AIzaSyAs3JEA2_UGLaQHq-MlprtQQFfgIruRJNU",
     authDomain: "bannana-24273.firebaseapp.com",
@@ -9,29 +10,30 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 var time = moment()
+// click event to add train
 $("#add-train-btn").on("click", function (event) {
     event.preventDefault();
-
+    // setting variables for user input
     var trainName = $("#train-name-input").val().trim();
     var trainDest = $("#destination-input").val().trim();
     var trainStart = moment($("#start-input").val().trim(), "h:mm a").format("X");
     var trainFreq = $("#frequency-input").val().trim();
-
+    // creating data to be held in firebase
     var newTrain = {
         train: trainName,
         destination: trainDest,
         start: trainStart,
         frequency: trainFreq,
     };
-
+    // pushing to firebase
     database.ref().push(newTrain);
-
+    // resets user input box to empty after train is added
     $("#train-name-input").val("");
     $("#destination-input").val("");
     $("#start-input").val("");
     $("#frequency-input").val("");
 });
-
+// what happens when new data is added to the database
 database.ref().on("child_added", function autoUpdate (childSnapshot) {
     console.log(childSnapshot.val());
 
@@ -43,7 +45,7 @@ database.ref().on("child_added", function autoUpdate (childSnapshot) {
 
     var trainStartConvert = moment(trainStart, "h:mm a").subtract(1, "years");
 
-    // ct
+    
     var currentTime = moment()
 
     // Difference between the times
@@ -55,14 +57,14 @@ database.ref().on("child_added", function autoUpdate (childSnapshot) {
     var minAway = trainFreq - trainRemainder;
 
     var arrivalTime = moment().add(minAway, "minutes");
-
+    // showcases data on webpage
     var newRow = $("<tr>").append(
         $("<td>").text(trainName),
         $("<td>").text(trainDest),
         $("<td>").text(trainFreq),
         $("<td class='timeNow'>").text(moment(currentTime).format("h:mm a")),
         $("<td class='nextArrival'>").text(moment(arrivalTime).format("h:mm a")),
-        $("<td class='timeAway'>").text(minAway),
+        $("<td class='timeAway'>").text(minAway)
     );
 
     // Append the new row to the table
